@@ -160,8 +160,31 @@
         .progress-dot { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--neon-cyan); background: transparent; transition: all 0.4s; cursor: pointer; }
         .progress-dot.active, .progress-dot:hover { background: var(--neon-cyan); box-shadow: 0 0 15px var(--neon-cyan); transform: scale(1.3); }
 
+        /* Marca de agua: logos institucionales (diapositiva 0) */
+        .hero-logos {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 35px;
+            flex-wrap: wrap;
+        }
+        .hero-logos img {
+            height: 80px;
+            width: auto;
+            opacity: 0.35;
+            filter: grayscale(100%) brightness(1.8) drop-shadow(0 0 6px rgba(0, 243, 255, 0.25));
+            transition: opacity 0.5s ease, filter 0.5s ease, transform 0.5s ease;
+        }
+        /* El escudo es negro: lo invertimos a tono claro para que sea visible sobre el fondo oscuro */
+        .hero-logos img.invert { filter: invert(1) brightness(1.1) drop-shadow(0 0 6px rgba(0, 243, 255, 0.25)); }
+        .hero-logos img:hover {
+            opacity: 0.85;
+            transform: scale(1.05);
+        }
+
         @media (max-width: 992px) { .glass-card { max-width: 100%; background: rgba(15, 15, 30, 0.85); } }
-        @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } .hero-title { font-size: 2.2rem; } .question-text { font-size: 1.5rem; } .glass-card { padding: 25px; } .progress-indicator { display: none; } }
+        @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } .hero-title { font-size: 2.2rem; } .question-text { font-size: 1.5rem; } .glass-card { padding: 25px; } .progress-indicator { display: none; } .hero-logos { gap: 25px; } .hero-logos img { height: 55px; } }
     </style>
 </head>
 <body>
@@ -179,6 +202,10 @@
                 </header>
                 <p style="font-size: 1.2rem; color: var(--neon-cyan);">Desliza hacia abajo para comenzar el recorrido</p>
                 <p style="font-size: 0.9rem; color: #aaa; margin-top: 10px;">*Interactúa con los objetos 3D moviendo el puntero sobre ellos*</p>
+                <div class="hero-logos" aria-label="Logos institucionales">
+                    <img src="assets/logo-maestria.jpg" alt="Maestría en Comunicación - Educación" loading="lazy">
+                    <img class="invert" src="assets/escudo-ud.png" alt="Universidad Distrital Francisco José de Caldas" loading="lazy">
+                </div>
             </article>
         </section>
 
