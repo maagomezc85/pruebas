@@ -28,8 +28,8 @@
             --neon-magenta: #ff00ff;
             --neon-blue: #0055ff;
             --text-main: #e0e0e0;
-            --glass-bg: rgba(15, 15, 30, 0.75); 
-            --glass-border: rgba(0, 243, 255, 0.25);
+            --glass-bg: rgba(12, 14, 28, 0.82); 
+            --glass-border: rgba(0, 243, 255, 0.28);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -74,7 +74,7 @@
             pointer-events: none; 
         }
 
-        .glass-card, .progress-indicator {
+        .glass-card, .progress-indicator, .ui-controls {
             pointer-events: auto; 
         }
 
@@ -83,96 +83,104 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding: 80px 0;
+            padding: 70px 0;
             opacity: 0;
-            transform: translateY(80px) scale(0.95);
-            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
-            will-change: transform, opacity;
+            transform: translateY(60px) scale(0.97);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         section.visible { opacity: 1; transform: translateY(0) scale(1); }
 
+        /* Disposición especial para la Diapositiva 0 (Sol centrado arriba, tarjeta abajo) */
+        #diapositiva-0 {
+            justify-content: flex-end;
+            padding-bottom: 6vh;
+        }
+
+        /* Optimización GPU: backdrop-filter solo en la sección visible */
         .glass-card {
             display: block;
             width: 100%;
             max-width: 80%; 
-            background: var(--glass-bg);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
+            background: rgba(12, 14, 28, 0.92);
             border: 1px solid var(--glass-border);
             border-radius: 20px;
-            padding: 45px;
-            box-shadow: 0 8px 40px 0 rgba(0, 243, 255, 0.08), inset 0 0 40px rgba(0, 243, 255, 0.03);
+            padding: 42px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
             position: relative;
             overflow: hidden;
-            transition: box-shadow 0.5s, transform 0.4s;
+            transition: box-shadow 0.4s, border-color 0.4s;
+        }
+
+        section.visible .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 8px 40px 0 rgba(0, 243, 255, 0.08), inset 0 0 30px rgba(0, 243, 255, 0.03);
         }
 
         .glass-card.full-width { max-width: 100%; }
 
         .glass-card:hover {
-            box-shadow: 0 8px 60px 0 rgba(255, 0, 255, 0.15), inset 0 0 40px rgba(255, 0, 255, 0.05);
+            box-shadow: 0 8px 50px 0 rgba(255, 0, 255, 0.15), inset 0 0 30px rgba(255, 0, 255, 0.05);
+            border-color: rgba(0, 243, 255, 0.45);
         }
 
-        .glass-card::before {
+        section.visible .glass-card::before {
             content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: linear-gradient(45deg, transparent, var(--glass-border), transparent);
-            transform: rotate(45deg); animation: shine 8s infinite; pointer-events: none;
+            background: linear-gradient(45deg, transparent, rgba(0, 243, 255, 0.12), transparent);
+            transform: rotate(45deg); animation: shine 9s infinite; pointer-events: none;
         }
 
-        @keyframes shine { 0% { left: -50%; } 100% { left: 150%; } }
+        @keyframes shine { 0% { left: -60%; } 100% { left: 140%; } }
 
-        .hero-title { font-size: 2.8rem; font-weight: 800; color: #fff; text-shadow: 0 0 20px var(--neon-cyan), 0 0 40px var(--neon-blue); margin-bottom: 20px; line-height: 1.2; }
-        .hero-subtitle { font-size: 1.25rem; color: var(--neon-magenta); margin-bottom: 30px; font-weight: 600; font-family: 'Lora', serif; }
-        .hero-info p { font-size: 1.1rem; margin-bottom: 8px; }
+        .hero-title { font-size: 2.6rem; font-weight: 800; color: #fff; text-shadow: 0 0 20px var(--neon-cyan), 0 0 40px var(--neon-blue); margin-bottom: 18px; line-height: 1.2; }
+        .hero-subtitle { font-size: 1.25rem; color: var(--neon-magenta); margin-bottom: 25px; font-weight: 600; font-family: 'Lora', serif; }
+        .hero-info p { font-size: 1.08rem; margin-bottom: 8px; }
 
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 30px; }
-        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 30px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 25px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-top: 25px; }
 
         .highlight-box {
-            border-left: 4px solid var(--neon-cyan); padding: 20px; margin-bottom: 15px;
+            border-left: 4px solid var(--neon-cyan); padding: 18px 20px; margin-bottom: 15px;
             background: rgba(0, 243, 255, 0.05); border-radius: 0 12px 12px 0;
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-left-color 0.4s, background 0.4s, box-shadow 0.4s;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-left-color 0.3s, background 0.3s, box-shadow 0.3s;
         }
 
         .highlight-box:hover {
-            transform: translateX(5px) translateY(-5px); border-left-color: var(--neon-magenta);
-            background: rgba(255, 0, 255, 0.08); box-shadow: 0 8px 20px rgba(255, 0, 255, 0.1);
+            transform: translateX(5px) translateY(-3px); border-left-color: var(--neon-magenta);
+            background: rgba(255, 0, 255, 0.08); box-shadow: 0 6px 18px rgba(255, 0, 255, 0.1);
         }
 
-        .highlight-box h3, .highlight-box h4 { font-size: 1.3rem; margin-bottom: 10px; color: #fff; }
+        .highlight-box h3, .highlight-box h4 { font-size: 1.25rem; margin-bottom: 8px; color: #fff; }
 
-        .question-text { font-size: 2.2rem; text-align: center; color: #fff; text-shadow: 0 0 15px var(--neon-magenta); line-height: 1.4; font-family: 'Playfair Display', serif; font-style: italic; }
+        .question-text { font-size: 2.1rem; text-align: center; color: #fff; text-shadow: 0 0 15px var(--neon-magenta); line-height: 1.45; font-family: 'Playfair Display', serif; font-style: italic; }
 
         .tag { display: inline-block; padding: 5px 12px; background: rgba(0, 243, 255, 0.1); border: 1px solid var(--neon-cyan); border-radius: 15px; font-size: 0.85rem; margin-right: 5px; margin-bottom: 5px; font-family: 'Lora', serif; }
 
-        h2.section-title { font-size: 2rem; color: var(--neon-cyan); border-bottom: 2px solid var(--glass-border); padding-bottom: 10px; margin-bottom: 30px; }
+        h2.section-title { font-size: 1.9rem; color: var(--neon-cyan); border-bottom: 2px solid var(--glass-border); padding-bottom: 10px; margin-bottom: 25px; }
 
-        .author-name { color: var(--neon-cyan); font-weight: 600; font-size: 1.2rem; display: block; margin-bottom: 8px; }
+        .author-name { color: var(--neon-cyan); font-weight: 600; font-size: 1.2rem; display: block; margin-bottom: 8px; font-family: 'Playfair Display', serif; }
         .concept-key { color: var(--neon-magenta); font-weight: 600; }
 
         ul { list-style: none; }
-        ul li { margin-bottom: 12px; position: relative; padding-left: 22px; }
+        ul li { margin-bottom: 10px; position: relative; padding-left: 22px; }
         ul li::before { content: '▹'; position: absolute; left: 0; color: var(--neon-cyan); }
         .list-por-revisar li::before { color: var(--neon-magenta); }
-
-        .progress-indicator { position: fixed; right: 20px; top: 50%; transform: translateY(-50%); z-index: 100; display: flex; flex-direction: column; gap: 12px; }
-        .progress-dot { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--neon-cyan); background: transparent; transition: all 0.4s; cursor: pointer; }
-        .progress-dot.active, .progress-dot:hover { background: var(--neon-cyan); box-shadow: 0 0 15px var(--neon-cyan); transform: scale(1.3); }
 
         /* Marca de agua: logos institucionales (diapositiva 0) */
         .hero-logos {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 40px;
-            margin-top: 35px;
+            gap: 36px;
+            margin-top: 22px;
             flex-wrap: wrap;
         }
         .hero-logos img {
-            height: 80px;
+            height: 70px;
             width: auto;
-            opacity: 0.35;
+            opacity: 0.32;
             filter: grayscale(100%) brightness(1.8) drop-shadow(0 0 6px rgba(0, 243, 255, 0.25));
             transition: opacity 0.5s ease, filter 0.5s ease, transform 0.5s ease;
         }
@@ -183,25 +191,102 @@
             transform: scale(1.05);
         }
 
-        @media (max-width: 992px) { .glass-card { max-width: 100%; background: rgba(15, 15, 30, 0.85); } }
-        @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } .hero-title { font-size: 2.2rem; } .question-text { font-size: 1.5rem; } .glass-card { padding: 25px; } .progress-indicator { display: none; } .hero-logos { gap: 25px; } .hero-logos img { height: 55px; } }
+        /* Controles de Presentación (Arriba a la derecha) */
+        .ui-controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .ui-btn {
+            background: rgba(15, 15, 30, 0.75);
+            border: 1px solid var(--glass-border);
+            color: var(--neon-cyan);
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-family: 'Lora', serif;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            backdrop-filter: blur(8px);
+        }
+
+        .ui-btn:hover {
+            background: rgba(0, 243, 255, 0.15);
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 12px rgba(0, 243, 255, 0.4);
+            color: #fff;
+        }
+
+        /* Indicador de progreso con Tooltips */
+        .progress-indicator { position: fixed; right: 24px; top: 50%; transform: translateY(-50%); z-index: 100; display: flex; flex-direction: column; gap: 14px; }
+        .progress-dot {
+            width: 11px; height: 11px; border-radius: 50%; border: 2px solid var(--neon-cyan);
+            background: transparent; transition: all 0.3s; cursor: pointer; position: relative;
+        }
+        .progress-dot.active, .progress-dot:hover { background: var(--neon-cyan); box-shadow: 0 0 12px var(--neon-cyan); transform: scale(1.3); }
+
+        .progress-dot::after {
+            content: attr(data-title);
+            position: absolute;
+            right: 22px;
+            top: 50%;
+            transform: translateY(-50%) translateX(8px);
+            background: rgba(10, 12, 24, 0.9);
+            border: 1px solid var(--glass-border);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.25s;
+        }
+        .progress-dot:hover::after {
+            opacity: 1;
+            transform: translateY(-50%) translateX(0);
+        }
+
+        @media (max-width: 992px) { .glass-card { max-width: 100%; background: rgba(15, 15, 30, 0.88); } }
+        @media (max-width: 768px) {
+            .grid-2 { grid-template-columns: 1fr; }
+            .hero-title { font-size: 2rem; }
+            .question-text { font-size: 1.4rem; }
+            .glass-card { padding: 25px; }
+            .progress-indicator, .ui-controls { display: none; }
+            .hero-logos { gap: 24px; }
+            .hero-logos img { height: 50px; }
+        }
     </style>
 </head>
 <body>
 
     <canvas id="three-canvas"></canvas>
+
+    <!-- Controles de modo presentación -->
+    <div class="ui-controls">
+        <button class="ui-btn" id="btn-prev" title="Diapositiva anterior (Flecha Arriba)">▲</button>
+        <button class="ui-btn" id="btn-next" title="Siguiente diapositiva (Flecha Abajo)">▼</button>
+        <button class="ui-btn" id="btn-fullscreen" title="Pantalla Completa (Tecla F)">⛶ Pantalla Completa</button>
+    </div>
+
     <nav class="progress-indicator" id="progress-indicator" aria-label="Navegación de secciones"></nav>
 
     <main class="container">
 
         <!-- SECCIÓN 0: El Sol -->
-        <section id="diapositiva-0" data-scene="sun" class="visible">
-            <article class="glass-card" style="text-align: center; max-width: 80%; margin: 0 auto;">
+        <section id="diapositiva-0" data-scene="sun" data-title="0. Introducción Solar" class="visible">
+            <article class="glass-card" style="text-align: center; max-width: 75%; margin: 0 auto; padding: 28px 40px;">
                 <header>
-                    <h1 class="hero-title">Proyecto Educomunicativo y Realidad Aumentada</h1>
+                    <h1 class="hero-title" style="font-size: 2.3rem; margin-bottom: 10px;">Proyecto Educomunicativo y Realidad Aumentada</h1>
                 </header>
-                <p style="font-size: 1.2rem; color: var(--neon-cyan);">Desliza hacia abajo para comenzar el recorrido</p>
-                <p style="font-size: 0.9rem; color: #aaa; margin-top: 10px;">*Interactúa con los objetos 3D moviendo el puntero sobre ellos*</p>
+                <p style="font-size: 1.15rem; color: var(--neon-cyan);">Desliza hacia abajo o usa las flechas del teclado (▼) para comenzar el recorrido</p>
+                <p style="font-size: 0.9rem; color: #aaa; margin-top: 6px;">*Interactúa con los objetos 3D moviendo el puntero sobre ellos*</p>
                 <div class="hero-logos" aria-label="Logos institucionales">
                     <img src="assets/logo-maestria.jpg" alt="Maestría en Comunicación - Educación" loading="lazy">
                     <img class="invert" src="assets/escudo-ud.png" alt="Universidad Distrital Francisco José de Caldas" loading="lazy">
@@ -210,7 +295,7 @@
         </section>
 
         <!-- SECCIÓN 1: Portada -->
-        <section id="diapositiva-1" data-scene="hydrogen">
+        <section id="diapositiva-1" data-scene="hydrogen" data-title="1. Portada de Investigación">
             <article class="glass-card">
                 <header>
                     <h1 class="hero-title">Desarrollo, implementación y evaluación de un entorno interactivo de Realidad Aumentada</h1>
@@ -228,7 +313,7 @@
         </section>
 
         <!-- SECCIÓN 2: Contexto y Propuesta -->
-        <section id="diapositiva-2" data-scene="molecule">
+        <section id="diapositiva-2" data-scene="molecule" data-title="2. Problema y Propuesta">
             <article class="glass-card">
                 <header>
                     <h2 class="section-title">Contexto y Propuesta</h2>
@@ -236,28 +321,28 @@
                 <div class="grid-2">
                     <div class="highlight-box">
                         <h3>I. El Problema</h3>
-                        <p>Química inorgánica abstracta (estructuras, enlaces, electrones, funciones químicas). Nivel micro y nanométrico difícil de comprender. Enseñanza bidimensional (tablero, libro) y modelos 3D limitados. Consecuencia: memorización, desmotivación, aprendizaje mecánico y no significativo.</p>
+                        <p>Química inorgánica abstracta (estructuras, enlaces, electrones, funciones químicas). Nivel micro y nanométrico difícil de comprender. Enseñanza bidimensional (tablero, libro, cuaderno) y modelos 3D limitados (maquetas). Consecuencia: memorización, desmotivación, aprendizaje mecánico y no significativo.</p>
                     </div>
                     <div class="highlight-box">
                         <h3>II. Práctica Docente</h3>
                         <p>Modelos tradicionales y "bancarios". Maestro como dador de conocimiento y estudiante como receptor pasivo.</p>
                     </div>
                     <div class="highlight-box">
-                        <h3>III. Oportunidad y Propuesta</h3>
-                        <p><strong>Entornos interactivos:</strong> diálogo, colaboración, experiencias sensibles mediante herramientas tecnológicas de inmersión. <br>
+                        <h3>III. Oportunidad & IV. Propuesta</h3>
+                        <p><strong>Entornos interactivos:</strong> diálogo, colaboración, experiencias sensibles mediante herramientas tecnológicas de inmersión interactiva (Limitante: costosas, difícil acceso, pocas desde Investigación-Creación). <br>
                         <strong>Propuesta:</strong> Realidad Aumentada (RA). Materializa lo invisible y abstracto, reduciendo la carga cognitiva en ciencias naturales.</p>
                     </div>
                     <div class="highlight-box">
-                        <h3>V. Aplicación y Resultados</h3>
-                        <p><strong>Aplicación:</strong> Experiencia pedagógica interactiva con RA en estudiantes de 8° y 9° (Colegio Calasanz). <br>
-                        <strong>Resultados:</strong> Aula como dispositivo mediador, dinamización de relaciones, apropiación de conocimientos y reconfiguración de prácticas educomunicativas.</p>
+                        <h3>V. Aplicación & VI. Resultados</h3>
+                        <p><strong>Aplicación:</strong> Experiencia pedagógica interactiva con RA en estudiantes de grado 8° y 9° del Colegio Calasanz. <br>
+                        <strong>Resultados esperados:</strong> Aula como dispositivo mediador, dinamización de relaciones, apropiación de conocimientos y reconfiguración de prácticas educomunicativas.</p>
                     </div>
                 </div>
             </article>
         </section>
 
         <!-- SECCIÓN 3: Pregunta de Investigación -->
-        <section id="diapositiva-3" data-scene="book">
+        <section id="diapositiva-3" data-scene="book" data-title="3. Pregunta Holopráxica">
             <article class="glass-card">
                 <header>
                     <h2 class="section-title" style="text-align: center; border-bottom: none;">Pregunta Holopráxica</h2>
@@ -269,7 +354,7 @@
         </section>
 
         <!-- SECCIÓN 4: Objetivos -->
-        <section id="diapositiva-objetivos" data-scene="target">
+        <section id="diapositiva-objetivos" data-scene="target" data-title="4. Objetivos de Investigación">
             <article class="glass-card">
                 <header>
                     <h2 class="section-title">Objetivos de la Investigación</h2>
@@ -294,7 +379,7 @@
         </section>
 
         <!-- SECCIÓN 5: Top 5 RA -->
-        <section id="diapositiva-4-1" data-scene="crystal">
+        <section id="diapositiva-4-1" data-scene="crystal" data-title="5. Top 5 Realidad Aumentada">
             <article class="glass-card">
                 <header>
                     <h2 class="section-title">Revisión Documental: Top 5 Realidad Aumentada</h2>
@@ -303,47 +388,49 @@
                     <h4>1. Uso de tecnologías avanzadas para la educación científica</h4>
                     <p>(Arabit-García, García-Tudela, & Prendes-Espinosa, 2021)</p>
                     <ul>
-                        <li><strong>Descarga (PDF):</strong> <a href="https://rieoei.org/RIE/article/download/4591/4253" target="_blank" rel="noopener noreferrer">Enlace OEI</a></li>
-                        <li><strong>DOI oficial:</strong> <a href="https://doi.org/10.35362/rie8714591" target="_blank" rel="noopener noreferrer">10.35362/rie8714591</a></li>
+                        <li><strong>Enlace de descarga (PDF):</strong> <a href="https://rieoei.org/RIE/article/download/4591/4253" target="_blank" rel="noopener noreferrer">https://rieoei.org/RIE/article/download/4591/4253</a></li>
+                        <li><strong>DOI oficial:</strong> <a href="https://doi.org/10.35362/rie8714591" target="_blank" rel="noopener noreferrer">https://doi.org/10.35362/rie8714591</a></li>
                         <li><strong>Publicación:</strong> Revista Iberoamericana de Educación (OEI).</li>
                     </ul>
                 </div>
                 <div class="highlight-box">
-                    <h4>2. Virtual and Augmented Reality in STEM Education: An Umbrella Review</h4>
+                    <h4>2. Virtual and Augmented Reality in Science, Technology, Engineering, and Mathematics (STEM) Education: An Umbrella Review</h4>
                     <p>(Zhang, Feijoo-Garcia, Gu, Popescu, Benes, & Magana, 2024)</p>
                     <ul>
-                        <li><strong>Acceso (DOI):</strong> <a href="https://doi.org/10.3390/info15090515" target="_blank" rel="noopener noreferrer">10.3390/info15090515</a></li>
+                        <li><strong>Enlace de acceso (DOI):</strong> <a href="https://doi.org/10.3390/info15090515" target="_blank" rel="noopener noreferrer">https://doi.org/10.3390/info15090515</a></li>
                         <li><strong>Publicación:</strong> Information (MDPI).</li>
                     </ul>
                 </div>
                 <div class="highlight-box">
-                    <h4>3. Diseño de entornos educativos basados en aplicaciones interactivas de RA y videojuegos</h4>
+                    <h4>3. Diseño de entornos educativos basados en aplicaciones interactivas de realidad aumentada y videojuegos para el aprendizaje activo de la Arqueología</h4>
                     <p>(León Lescano, Eyzaguirre Mamani, & Gómez Illatopa, 2016)</p>
                     <ul>
-                        <li><strong>Descarga (PDF):</strong> <a href="http://www.usmp.edu.pe/campus/pdf/revista22/articulo8.pdf" target="_blank" rel="noopener noreferrer">Enlace USMP</a></li>
-                        <li><strong>Institución:</strong> Universidad de San Martín de Porres / Proyecto Innóvate Perú.</li>
+                        <li><strong>Enlace de descarga (PDF):</strong> <a href="http://www.usmp.edu.pe/campus/pdf/revista22/articulo8.pdf" target="_blank" rel="noopener noreferrer">http://www.usmp.edu.pe/campus/pdf/revista22/articulo8.pdf</a></li>
+                        <li><strong>Institución:</strong> Universidad de San Martín de Porres (USMP) / Proyecto Innóvate Perú.</li>
                     </ul>
                 </div>
                 <div class="highlight-box">
-                    <h4>4. Innovación Metodológica en la Enseñanza de las Ciencias Naturales</h4>
+                    <h4>4. Innovación Metodológica en la Enseñanza de las Ciencias Naturales: Integración de Realidad Aumentada y Aprendizaje Basado en Proyectos...</h4>
                     <p>(Bernal Párraga, Ibarvo Arias, et al., 2025)</p>
                     <ul>
-                        <li><strong>Acceso (DOI):</strong> <a href="https://doi.org/10.61368/r.s.d.h.v6i2.613" target="_blank" rel="noopener noreferrer">10.61368/r.s.d.h.v6i2.613</a></li>
+                        <li><strong>Enlace de acceso (DOI):</strong> <a href="https://doi.org/10.61368/r.s.d.h.v6i2.613" target="_blank" rel="noopener noreferrer">https://doi.org/10.61368/r.s.d.h.v6i2.613</a></li>
+                        <li><strong>Publicación:</strong> Revista Científica de Salud y Desarrollo Humano.</li>
                     </ul>
                 </div>
                 <div class="highlight-box">
-                    <h4>5. Augmented Reality in K–12 Education: A Systematic Review</h4>
+                    <h4>5. Augmented Reality in K–12 Education: A Systematic Review and Meta-Analysis of the Literature from 2000 to 2020</h4>
                     <p>(Zhang, Li, Huang, Feng, & Luo, 2022)</p>
                     <ul>
-                        <li><strong>Descarga (PDF):</strong> <a href="https://www.mdpi.com/2071-1050/14/15/9725/pdf?version=1659949361" target="_blank" rel="noopener noreferrer">Enlace MDPI</a></li>
-                        <li><strong>DOI oficial:</strong> <a href="https://doi.org/10.3390/su14159725" target="_blank" rel="noopener noreferrer">10.3390/su14159725</a></li>
+                        <li><strong>Enlace de descarga (PDF):</strong> <a href="https://www.mdpi.com/2071-1050/14/15/9725/pdf?version=1659949361" target="_blank" rel="noopener noreferrer">https://www.mdpi.com/2071-1050/14/15/9725/pdf?version=1659949361</a></li>
+                        <li><strong>DOI oficial:</strong> <a href="https://doi.org/10.3390/su14159725" target="_blank" rel="noopener noreferrer">https://doi.org/10.3390/su14159725</a></li>
+                        <li><strong>Publicación:</strong> Sustainability (MDPI).</li>
                     </ul>
                 </div>
             </article>
         </section>
 
         <!-- SECCIÓN 6: Comunicación-Educación -->
-        <section id="diapositiva-4-2" data-scene="network">
+        <section id="diapositiva-4-2" data-scene="network" data-title="6. Top Comunicación-Educación">
             <article class="glass-card">
                 <header>
                     <h2 class="section-title">Top en Comunicación-Educación</h2>
@@ -352,44 +439,47 @@
                     <div class="highlight-box">
                         <span class="author-name">1. Mark Billinghurst</span>
                         <p><span class="concept-key">Concepto clave:</span> Interfaces colaborativas y carga cognitiva.</p>
-                        <p><strong>Aporte:</strong> Pilar en la intersección de educación, comunicación y RA. Demuestra cómo la RA reduce la "carga cognitiva" extrínseca al manipular conceptos abstractos de forma tangible.</p>
+                        <p><strong>Aporte:</strong> Billinghurst es un pilar en la intersección de la educación, la comunicación y la RA. Sus estudios demuestran cómo la RA reduce la "carga cognitiva" extrínseca del estudiante al permitirle manipular conceptos abstractos (como átomos o moléculas) de forma tangible. Además, teoriza cómo la RA, a diferencia de la realidad virtual, fomenta la comunicación y colaboración "cara a cara" en el aula.</p>
+                        <p><strong>Lectura de referencia:</strong> Augmented Reality in Education (2012) o sus múltiples artículos sobre el proyecto MagicBook.</p>
                     </div>
                     <div class="highlight-box">
                         <span class="author-name">2. Hannes Kaufmann</span>
                         <p><span class="concept-key">Concepto clave:</span> Desarrollo de habilidades espaciales.</p>
-                        <p><strong>Aporte:</strong> Creador de "Construct3D". Argumenta por qué la química se beneficia de la RA para simular experimentos y comprender geometría tridimensional.</p>
+                        <p><strong>Aporte:</strong> Es el creador de "Construct3D". Kaufmann ha publicado disertaciones de altísimo impacto sobre cómo la RA sirve para simular experimentos físicos matemáticos y comprender la geometría tridimensional. Esto servirá para argumentar por qué la química (especialmente la estructura de Lewis, moléculas y átomos) se beneficia directamente de la RA, al requerir habilidades espaciales.</p>
+                        <p><strong>Lectura de referencia:</strong> Construct3D: A Virtual Reality Application for Mathematics and Geometry Education y sus textos sobre simulaciones de experimentos físicos en RA.</p>
                     </div>
                     <div class="highlight-box">
                         <span class="author-name">3. María Blanca Ibáñez</span>
                         <p><span class="concept-key">Concepto clave:</span> El estado de flujo (Flow) y la educación STEM.</p>
-                        <p><strong>Aporte:</strong> Evalúa si la RA mejora resultados académicos o es solo un "efecto novedad", vinculándola con la atención y el engagement.</p>
+                        <p><strong>Aporte:</strong> Es una de las investigadoras contemporáneas de mayor impacto en España e Iberoamérica sobre tecnologías educativas en STEM (Ciencias y Matemáticas). Sus artículos evalúan experimentalmente si la RA realmente mejora los resultados académicos o si es solo un "efecto de novedad", vinculando el uso de la app con la atención, concentración y el engagement del estudiante.</p>
+                        <p><strong>Lectura de referencia:</strong> Augmented reality for STEM learning: A systematic review y artículos específicos sobre RA enseñando conceptos de electricidad o química.</p>
                     </div>
                     <div class="highlight-box">
                         <span class="author-name">4. Hsin-Kai Wu et al. (2013)</span>
-                        <p><strong>Aporte:</strong> Su revisión sistemática es obligatoria en el estado del arte para justificar cómo las metodologías de RA en ciencias exactas modifican los paradigmas de enseñanza.</p>
+                        <p><strong>Aporte:</strong> Su revisión sistemática (Current status, opportunities and challenges of augmented reality in education) es un artículo de obligatoria citación en el estado del arte para justificar cómo las metodologías de RA aplicadas a las ciencias exactas modifican los paradigmas de enseñanza tradicionales.</p>
                     </div>
                 </div>
             </article>
         </section>
 
         <!-- SECCIÓN 7: Artículos & Por revisar -->
-        <section id="diapositiva-4-3" data-scene="cube">
+        <section id="diapositiva-4-3" data-scene="cube" data-title="7. Artículos y Autores por Revisar">
             <article class="glass-card">
                 <div class="grid-2">
                     <div>
                         <header><h2 class="section-title" style="font-size: 1.6rem;">Comunicación (Artículos)</h2></header>
                         <ul>
-                            <li><strong>Augmented Reality in Education</strong> <br>(Mark Billinghurst)</li>
-                            <li><strong>Construct3D</strong> <br>(Hannes Kaufmann)</li>
-                            <li><strong>Augmented reality for STEM learning</strong> <br>(María Blanca Ibáñez)</li>
-                            <li><strong>Current status... augmented reality</strong> <br>(Hsin-Kai Wu et al., 2013)</li>
+                            <li><strong>Augmented Reality in Education</strong> <br>(Mark Billinghurst) - <em>Artículo (ok)</em></li>
+                            <li><strong>Construct3D: A Virtual Reality Application for Mathematics and Geometry Education</strong> <br>(Hannes Kaufmann) - <em>Artículo / Actas de Conferencia B</em></li>
+                            <li><strong>Augmented reality for STEM learning: A systematic review</strong> <br>(María Blanca Ibáñez) - <em>Artículo Académico</em></li>
+                            <li><strong>Current status, opportunities and challenges of augmented reality in education</strong> <br>(Hsin-Kai Wu et al., 2013) - <em>Artículo</em></li>
                         </ul>
                     </div>
                     <div>
                         <header><h2 class="section-title" style="font-size: 1.6rem; color: var(--neon-magenta); border-bottom-color: var(--neon-magenta);">Comunicación-Educación (Por revisar)</h2></header>
                         <ul class="list-por-revisar">
-                            <li><strong>Jesús Martín Barbero:</strong> Mediaciones culturales en el aula.</li>
-                            <li><strong>Jorge Huergo:</strong> Campo transdisciplinario "Comunicación/Educación".</li>
+                            <li><strong>Jesús Martín Barbero:</strong> Mediaciones culturales en el aula. Estudios culturales.</li>
+                            <li><strong>Jorge Huergo:</strong> Campo transdisciplinario de “Comunicación/Educación”.</li>
                             <li><strong>Jay L. Lemke:</strong> Semiótica multimodal.</li>
                             <li><strong>Henry Jenkins:</strong> Narrativas transmedia y cultura participativa.</li>
                             <li><strong>Pierre Lévy:</strong> Entornos inmersivos desde cibercultura.</li>
@@ -401,7 +491,7 @@
         </section>
 
         <!-- SECCIÓN 8: Diseño Metodológico -->
-        <section id="diapositiva-5" data-scene="none">
+        <section id="diapositiva-5" data-scene="none" data-title="8. Enunciado Holopráxico">
             <article class="glass-card full-width">
                 <header>
                     <h2 class="section-title">Enunciado Holopráxico (Esquema de Investigación)</h2>
@@ -409,22 +499,24 @@
                 <div class="grid-3">
                     <div class="highlight-box">
                         <span class="tag">¿Qué quiero saber?</span>
-                        <p>Evaluar la incidencia del diseño y mediación tecnológica de un entorno interactivo de RA.</p>
-                        <p><strong>Objetivos Específicos:</strong> Desarrollar entorno, implementarlo y evaluar el nivel de transformación en las prácticas.</p>
+                        <p><strong>Objetivo General:</strong> Evaluar la incidencia del diseño y la mediación tecnológica de un entorno interactivo de RA...</p>
+                        <p><strong>Objetivos Específicos:</strong> Desarrollar un entorno interactivo de RA, implementarlo con los estudiantes y evaluar el nivel de transformación en las prácticas.</p>
+                        <p><strong>Nivel de investigación:</strong> Integrativa.</p>
                     </div>
                     <div class="highlight-box">
-                        <span class="tag">¿En quiénes? / ¿Dónde?</span>
-                        <p><strong>Población:</strong> Estudiantes de grado 8° y 9°.</p>
-                        <p><strong>Contexto:</strong> Colegio Calasanz Bogotá.</p>
-                        <p><strong>Cuándo:</strong> Primer semestre del 2027.</p>
+                        <span class="tag">¿En quiénes? / ¿Dónde? / ¿Cuándo?</span>
+                        <p><strong>Población:</strong> Estudiantes de grado 8° y 9° del Colegio Calasanz.</p>
+                        <p><strong>Contexto (¿Dónde?):</strong> Colegio Calasanz Bogotá.</p>
+                        <p><strong>Temporalidad (¿Cuándo?):</strong> Durante el primer semestre del 2027.</p>
                     </div>
                     <div class="highlight-box">
-                        <span class="tag">Diseño / Evaluación</span>
-                        <p><strong>Tipo:</strong> Cualitativo, descriptivo observacional. Grupos focales. Nivel Integrativo.</p>
-                        <p><strong>Herramientas:</strong> Guías de usabilidad, pruebas de software, Pre-test y post-test.</p>
+                        <span class="tag">Diseño / Implementación / Evaluación</span>
+                        <p><strong>Evaluación:</strong> Cualitativo, descriptivo observacional. Grupos focales...</p>
+                        <p><strong>Implementación:</strong> Pre-test y post-test.</p>
+                        <p><strong>Diseño:</strong> Guías de usabilidad y pruebas de software.</p>
                     </div>
                     <div class="highlight-box" style="grid-column: 1 / -1;">
-                        <span class="tag" style="background: rgba(255, 0, 255, 0.2); border-color: var(--neon-magenta);">Fundamento Teórico</span>
+                        <span class="tag" style="background: rgba(255, 0, 255, 0.2); border-color: var(--neon-magenta);">¿Acerca de? — Fundamento Teórico</span>
                         <footer style="text-align: center; margin-top: 15px;">
                             <span class="tag">Realidad Aumentada</span>
                             <span class="tag">Educomunicación</span>
@@ -439,7 +531,7 @@
     </main>
 
     <!-- ============================================
-         SCRIPT PRINCIPAL - THREE.JS + GSAP (OPTIMIZADO)
+         SCRIPT PRINCIPAL - THREE.JS + GSAP (ULTRA OPTIMIZADO)
          ============================================ -->
     <script type="module">
         import * as THREE from 'three';
@@ -451,38 +543,44 @@
         // 1. CONFIGURACIÓN BASE
         const canvas = document.getElementById('three-canvas');
         const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x050510, 0.02);
+        scene.fog = new THREE.FogExp2(0x050510, 0.018);
 
-        const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 200);
+        const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 150);
         camera.position.set(0, 0, 12);
 
-        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: "high-performance" });
+        const renderer = new THREE.WebGLRenderer({
+            canvas,
+            antialias: true,
+            alpha: false,
+            powerPreference: "high-performance"
+        });
+        renderer.setClearColor(0x050510, 1);
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5)); // 1.5 garantiza nitidez máxima y 60fps estables
         renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        renderer.toneMappingExposure = 1.2;
+        renderer.toneMappingExposure = 1.15;
 
-        // 2. POST-PROCESADO Y BLOOM
+        // 2. POST-PROCESADO Y BLOOM (Con resolución optimizada)
         const composer = new EffectComposer(renderer);
         composer.addPass(new RenderPass(scene, camera));
         const bloomPass = new UnrealBloomPass(
-            new THREE.Vector2(window.innerWidth, window.innerHeight),
+            new THREE.Vector2(window.innerWidth / 2, window.innerHeight / 2),
             1.5, 0.4, 0.85
         );
         composer.addPass(bloomPass);
 
         // 3. ILUMINACIÓN BASE
-        scene.add(new THREE.AmbientLight(0x223355, 1.5));
+        scene.add(new THREE.AmbientLight(0x223355, 1.6));
         const lightCyan = new THREE.PointLight(0x00f3ff, 80, 50); lightCyan.position.set(6, 4, 8); scene.add(lightCyan);
         const lightMagenta = new THREE.PointLight(0xff00ff, 80, 50); lightMagenta.position.set(-6, -4, 8); scene.add(lightMagenta);
-        const lightWhite = new THREE.DirectionalLight(0xffffff, 1); lightWhite.position.set(0, 10, 5); scene.add(lightWhite);
+        const lightWhite = new THREE.DirectionalLight(0xffffff, 1.2); lightWhite.position.set(0, 10, 5); scene.add(lightWhite);
 
-        // TEXTURAS PROCEDURALES LIGERAS
-        function createNoiseTexture(size = 256, baseColor = '#0a0a2a', accent = '#00f3ff') {
+        // TEXTURAS PROCEDURALES
+        function createNoiseTexture(size = 128, baseColor = '#0a0a2a', accent = '#00f3ff') {
             const c = document.createElement('canvas'); c.width = c.height = size; const ctx = c.getContext('2d');
             const grad = ctx.createLinearGradient(0, 0, size, size); grad.addColorStop(0, baseColor); grad.addColorStop(0.5, '#1a1a3a'); grad.addColorStop(1, baseColor);
             ctx.fillStyle = grad; ctx.fillRect(0, 0, size, size);
-            for (let i = 0; i < 80; i++) { ctx.beginPath(); ctx.arc(Math.random() * size, Math.random() * size, Math.random() * 3 + 0.5, 0, Math.PI * 2); ctx.fillStyle = Math.random() > 0.5 ? accent : '#ffffff'; ctx.globalAlpha = Math.random() * 0.8 + 0.2; ctx.fill(); }
+            for (let i = 0; i < 60; i++) { ctx.beginPath(); ctx.arc(Math.random() * size, Math.random() * size, Math.random() * 2.5 + 0.5, 0, Math.PI * 2); ctx.fillStyle = Math.random() > 0.5 ? accent : '#ffffff'; ctx.globalAlpha = Math.random() * 0.8 + 0.2; ctx.fill(); }
             ctx.globalAlpha = 1; const tex = new THREE.CanvasTexture(c); tex.wrapS = tex.wrapT = THREE.RepeatWrapping; tex.colorSpace = THREE.SRGBColorSpace; return tex;
         }
         
@@ -495,32 +593,32 @@
             ctx.fillStyle = grad; ctx.fillRect(0, 0, size, size); return new THREE.CanvasTexture(c);
         }
 
-        const noiseTexMagenta = createNoiseTexture(256, '#1a0a1a', '#ff00ff');
+        const noiseTexMagenta = createNoiseTexture(128, '#1a0a1a', '#ff00ff');
         const circleTex = createCircleTexture();
 
-        // PARTÍCULAS GLOBALES DE FONDO (Optimizadas con tamaño de buffer fijo)
-        const globalParticleCount = 400; // Reducido ligeramente para optimizar FPS en dispositivos móviles/lentos
+        // PARTÍCULAS GLOBALES DE FONDO
+        const globalParticleCount = 350;
         const globalParticleGeo = new THREE.BufferGeometry();
         const globalPositions = new Float32Array(globalParticleCount * 3);
         const globalColors = new Float32Array(globalParticleCount * 3);
         for (let i = 0; i < globalParticleCount; i++) {
-            globalPositions[i * 3]     = (Math.random() - 0.5) * 80;
-            globalPositions[i * 3 + 1] = (Math.random() - 0.5) * 80;
-            globalPositions[i * 3 + 2] = (Math.random() - 0.5) * 80 - 10;
+            globalPositions[i * 3]     = (Math.random() - 0.5) * 75;
+            globalPositions[i * 3 + 1] = (Math.random() - 0.5) * 75;
+            globalPositions[i * 3 + 2] = (Math.random() - 0.5) * 60 - 10;
             const isCyan = Math.random() > 0.5;
             globalColors[i * 3]     = isCyan ? 0.0 : 1.0;
             globalColors[i * 3 + 1] = isCyan ? 0.95 : 0.0;
-            globalColors[i * 3 + 2] = isCyan ? 1.0 : 1.0;
+            globalColors[i * 3 + 2] = 1.0;
         }
         globalParticleGeo.setAttribute('position', new THREE.BufferAttribute(globalPositions, 3));
         globalParticleGeo.setAttribute('color', new THREE.BufferAttribute(globalColors, 3));
         const globalParticles = new THREE.Points(globalParticleGeo, new THREE.PointsMaterial({
-            size: 0.25, map: circleTex, vertexColors: true, transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending, depthWrite: false, alphaTest: 0.1
+            size: 0.25, map: circleTex, vertexColors: true, transparent: true, opacity: 0.55, blending: THREE.AdditiveBlending, depthWrite: false
         }));
         scene.add(globalParticles);
 
         // ============================================
-        // 4. SHADERS DEL SOL
+        // 4. SHADERS DEL SOL (OPTIMIZADOS PARA GPU)
         // ============================================
         const sunUniforms = {
             uTime:       { value: 0 },
@@ -528,12 +626,15 @@
             uColor2:     { value: new THREE.Color(0xffaa00) },
             uColor3:     { value: new THREE.Color(0xffee55) },
             uColor4:     { value: new THREE.Color(0xffffff) },
-            uExplosion:  { value: 0.0 }
+            uSpeedMult:  { value: 1.0 }
         };
 
         const sunVertexShader = /* glsl */`
-            uniform float uTime; uniform float uExplosion;
-            varying vec3 vPosition; varying vec3 vNormal; varying vec3 vWorldPos; varying vec2 vUv;
+            uniform float uTime;
+            varying vec3 vPosition;
+            varying vec3 vNormal;
+            varying vec3 vWorldPos;
+
             vec3 mod289(vec3 x) { return x - floor(x * (1.0/289.0)) * 289.0; }
             vec4 mod289(vec4 x) { return x - floor(x * (1.0/289.0)) * 289.0; }
             vec4 permute(vec4 x) { return mod289(((x*34.0)+1.0)*x); }
@@ -553,22 +654,37 @@
                 vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2,p2), dot(p3,p3))); p0 *= norm.x; p1 *= norm.y; p2 *= norm.z; p3 *= norm.w;
                 vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0); m = m * m; return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
             }
-            float fbm(vec3 p) { float v = 0.0; float a = 0.5; for (int i = 0; i < 4; i++) { v += a * snoise(p); p *= 2.02; a *= 0.5; } return v; }
+
             void main() {
-                vUv = uv; vec3 p = position * 1.3; float t = uTime * 0.35;
-                float n1 = fbm(p + vec3(t, t * 0.6, -t * 0.4)); float n2 = fbm(p * 1.8 + vec3(-t * 0.7, t * 0.9, t * 0.5));
-                float displacement = (n1 * 0.6 + n2 * 0.4) * 0.35; displacement += uExplosion * 0.4;
+                vec3 p = position * 1.2;
+                float t = uTime * 0.35;
+                float n1 = snoise(p + vec3(t, t * 0.6, -t * 0.4));
+                float n2 = snoise(p * 2.2 + vec3(-t * 0.7, t * 0.9, t * 0.5)) * 0.5;
+                float displacement = (n1 + n2) * 0.25;
                 vec3 displaced = position + normal * displacement;
-                vNormal = normalize(normalMatrix * normal); vPosition = displaced;
-                vec4 worldPos = modelMatrix * vec4(displaced, 1.0); vWorldPos = worldPos.xyz;
+                vNormal = normalize(normalMatrix * normal);
+                vPosition = displaced;
+                vec4 worldPos = modelMatrix * vec4(displaced, 1.0);
+                vWorldPos = worldPos.xyz;
                 gl_Position = projectionMatrix * viewMatrix * worldPos;
             }
         `;
 
+        // Fragment shader optimizado: 5 llamadas a snoise en vez de 16, idéntica riqueza visual
         const sunFragmentShader = /* glsl */`
-            uniform float uTime; uniform vec3 uColor1; uniform vec3 uColor2; uniform vec3 uColor3; uniform vec3 uColor4; uniform float uExplosion;
-            varying vec3 vPosition; varying vec3 vNormal; varying vec3 vWorldPos;
-            vec3 mod289(vec3 x) { return x - floor(x * (1.0/289.0)) * 289.0; } vec4 mod289(vec4 x) { return x - floor(x * (1.0/289.0)) * 289.0; } vec4 permute(vec4 x) { return mod289(((x*34.0)+1.0)*x); } vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
+            uniform float uTime;
+            uniform vec3 uColor1;
+            uniform vec3 uColor2;
+            uniform vec3 uColor3;
+            uniform vec3 uColor4;
+            varying vec3 vPosition;
+            varying vec3 vNormal;
+            varying vec3 vWorldPos;
+
+            vec3 mod289(vec3 x) { return x - floor(x * (1.0/289.0)) * 289.0; }
+            vec4 mod289(vec4 x) { return x - floor(x * (1.0/289.0)) * 289.0; }
+            vec4 permute(vec4 x) { return mod289(((x*34.0)+1.0)*x); }
+            vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
             float snoise(vec3 v) {
                 const vec2 C = vec2(1.0/6.0, 1.0/3.0); const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
                 vec3 i  = floor(v + dot(v, C.yyy)); vec3 x0 = v - i + dot(i, C.xxx);
@@ -581,20 +697,29 @@
                 vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2,p2), dot(p3,p3))); p0 *= norm.x; p1 *= norm.y; p2 *= norm.z; p3 *= norm.w;
                 vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0); m = m * m; return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
             }
-            float fbm(vec3 p) { float v = 0.0; float a = 0.5; for (int i = 0; i < 4; i++) { v += a * snoise(p); p *= 2.02; a *= 0.5; } return v; }
+
             void main() {
-                float t = uTime * 0.4; vec3 p = vPosition * 1.5;
-                vec3 warp = vec3(fbm(p + vec3(t, 0.0, 0.0)), fbm(p + vec3(0.0, t, 0.0)), fbm(p + vec3(0.0, 0.0, t)));
-                float n = fbm(p + warp * 1.2 + vec3(0.0, -t * 0.5, t * 0.3)); n = n * 0.5 + 0.5;
-                vec3 color = mix(uColor1, uColor2, smoothstep(0.0, 0.4, n));
-                color = mix(color, uColor3, smoothstep(0.4, 0.7, n));
+                float t = uTime * 0.4;
+                vec3 p = vPosition * 1.4;
+                float w1 = snoise(p + vec3(t, 0.0, 0.0));
+                float w2 = snoise(p + vec3(0.0, t, 0.0));
+                vec3 warpedP = p + vec3(w1, w2, w1 - w2) * 0.85;
+
+                float n = snoise(warpedP + vec3(0.0, -t * 0.5, t * 0.3)) * 0.55
+                        + snoise(warpedP * 2.1 - t * 0.3) * 0.30
+                        + snoise(warpedP * 4.2 + t * 0.6) * 0.15;
+                n = n * 0.5 + 0.5;
+
+                vec3 color = mix(uColor1, uColor2, smoothstep(0.0, 0.42, n));
+                color = mix(color, uColor3, smoothstep(0.42, 0.72, n));
                 color = mix(color, uColor4, smoothstep(0.75, 1.0, n));
+
                 vec3 viewDir = normalize(cameraPosition - vWorldPos);
                 float fresnel = pow(max(1.0 - dot(vNormal, viewDir), 0.0), 2.0);
-                color += uColor3 * fresnel * 0.4;
+                color += uColor3 * fresnel * 0.45;
                 float inner = pow(max(1.0 - length(vPosition) / 3.5, 0.0), 2.0);
                 color += uColor4 * inner * 0.5;
-                color = mix(color, vec3(1.0), uExplosion * 0.85);
+
                 gl_FragColor = vec4(color, 1.0);
             }
         `;
@@ -605,21 +730,30 @@
         `;
 
         const coronaFragmentShader = /* glsl */`
-            uniform float uTime; uniform vec3 uColor1; uniform float uExplosion;
+            uniform vec3 uColor1;
             varying vec3 vNormal; varying vec3 vPosition; varying vec3 vWorldPos;
             void main() {
                 vec3 viewDir = normalize(cameraPosition - vWorldPos);
-                float intensity = pow(max(0.65 - dot(vNormal, viewDir), 0.0), 3.0);
-                vec3 color = uColor1 * intensity * 1.2;
+                float intensity = pow(max(0.68 - dot(vNormal, viewDir), 0.0), 3.0);
+                vec3 color = uColor1 * intensity * 1.35;
                 gl_FragColor = vec4(color, intensity * 0.85);
             }
         `;
 
         // ============================================
-        // 5. FUNCIONES DE CONSTRUCCIÓN OPTIMIZADAS
+        // 5. FUNCIONES DE CONSTRUCCIÓN (100% GPU)
         // ============================================
+        function addHitbox(group, radius = 3.2) {
+            const hitbox = new THREE.Mesh(
+                new THREE.SphereGeometry(radius, 8, 8),
+                new THREE.MeshBasicMaterial({ visible: false })
+            );
+            group.add(hitbox);
+            group.userData.hitbox = hitbox;
+        }
+
         function createInnerPlasma() {
-            const COUNT = 250; // Reducido a la mitad para mejorar fluidez manteniendo la estética
+            const COUNT = 260;
             const geometry = new THREE.BufferGeometry();
             const positions = new Float32Array(COUNT * 3); const sizes = new Float32Array(COUNT);
             const phases = new Float32Array(COUNT); const colors = new Float32Array(COUNT * 3);
@@ -640,7 +774,7 @@
             geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
             const material = new THREE.ShaderMaterial({
-                uniforms: { uTime: sunUniforms.uTime, uTex: { value: circleTex }, uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) } },
+                uniforms: { uTime: sunUniforms.uTime, uTex: { value: circleTex }, uPixelRatio: { value: Math.min(window.devicePixelRatio, 1.5) } },
                 vertexShader: `
                     uniform float uTime; uniform float uPixelRatio; attribute float aSize; attribute float aPhase; varying vec3 vColor; varying float vAlpha;
                     void main() {
@@ -660,7 +794,7 @@
         }
 
         function createDarkMetalParticles() {
-            const COUNT = 100; // Reducido para ligereza de render
+            const COUNT = 110;
             const geometry = new THREE.BufferGeometry();
             const positions = new Float32Array(COUNT * 3); const sizes = new Float32Array(COUNT);
             const colors = new Float32Array(COUNT * 3); const radii = new Float32Array(COUNT);
@@ -684,7 +818,7 @@
             geometry.setAttribute('aTilt', new THREE.BufferAttribute(tilt, 1));
 
             const material = new THREE.ShaderMaterial({
-                uniforms: { uTime: sunUniforms.uTime, uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) } },
+                uniforms: { uTime: sunUniforms.uTime, uPixelRatio: { value: Math.min(window.devicePixelRatio, 1.5) } },
                 vertexShader: `
                     uniform float uTime; uniform float uPixelRatio; attribute float aSize; attribute vec3 aColor; attribute float aRadius; attribute float aSpeed; attribute float aPhase; attribute float aTilt; varying vec3 vColor;
                     void main() {
@@ -704,40 +838,77 @@
             const points = new THREE.Points(geometry, material); points.frustumCulled = false; return points;
         }
 
+        // Llamaradas solares animadas 100% en GPU (sin bucle for en JS)
+        function createSolarFlaresGPU() {
+            const COUNT = 200;
+            const pGeo = new THREE.BufferGeometry();
+            const dirs = new Float32Array(COUNT * 3);
+            const phases = new Float32Array(COUNT);
+
+            for (let i = 0; i < COUNT; i++) {
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.acos(2 * Math.random() - 1);
+                dirs[i * 3]     = Math.sin(phi) * Math.cos(theta);
+                dirs[i * 3 + 1] = Math.sin(phi) * Math.sin(theta);
+                dirs[i * 3 + 2] = Math.cos(phi);
+                phases[i] = Math.random();
+            }
+            pGeo.setAttribute('position', new THREE.BufferAttribute(dirs, 3));
+            pGeo.setAttribute('aPhase', new THREE.BufferAttribute(phases, 1));
+
+            const mat = new THREE.ShaderMaterial({
+                uniforms: {
+                    uTime: sunUniforms.uTime,
+                    uTex: { value: circleTex },
+                    uPixelRatio: { value: Math.min(window.devicePixelRatio, 1.5) }
+                },
+                vertexShader: `
+                    uniform float uTime;
+                    uniform float uPixelRatio;
+                    attribute float aPhase;
+                    varying float vAlpha;
+                    void main() {
+                        float life = fract(aPhase + uTime * 0.18);
+                        float r = mix(3.4, 6.4, life);
+                        vec3 pos = position * r;
+                        vAlpha = sin(life * 3.14159);
+                        vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+                        gl_PointSize = 0.24 * uPixelRatio * (300.0 / -mvPosition.z);
+                        gl_Position = projectionMatrix * mvPosition;
+                    }
+                `,
+                fragmentShader: `
+                    uniform sampler2D uTex;
+                    varying float vAlpha;
+                    void main() {
+                        vec4 tex = texture2D(uTex, gl_PointCoord);
+                        gl_FragColor = vec4(1.0, 0.68, 0.1, tex.a * vAlpha * 0.85);
+                    }
+                `,
+                transparent: true, blending: THREE.AdditiveBlending, depthWrite: false
+            });
+            return new THREE.Points(pGeo, mat);
+        }
+
         function createSun() {
             const group = new THREE.Group();
-            const coreUniforms = { uTime: sunUniforms.uTime, uColor1: sunUniforms.uColor1, uColor2: sunUniforms.uColor2, uColor3: sunUniforms.uColor3, uColor4: sunUniforms.uColor4, uExplosion: sunUniforms.uExplosion };
-            const core = new THREE.Mesh(new THREE.SphereGeometry(3.5, 64, 64), new THREE.ShaderMaterial({ vertexShader: sunVertexShader, fragmentShader: sunFragmentShader, uniforms: coreUniforms })); // Reducido polígonos de 128 a 64 para rendimiento extremo sin perder calidad visual
+            const core = new THREE.Mesh(new THREE.SphereGeometry(3.3, 64, 64), new THREE.ShaderMaterial({ vertexShader: sunVertexShader, fragmentShader: sunFragmentShader, uniforms: sunUniforms }));
             group.add(core); group.userData.core = core;
 
-            const coronaUniforms = { uTime: sunUniforms.uTime, uColor1: { value: new THREE.Color(0xff7700) }, uExplosion: sunUniforms.uExplosion };
-            const corona = new THREE.Mesh(new THREE.SphereGeometry(4.6, 32, 32), new THREE.ShaderMaterial({ vertexShader: coronaVertexShader, fragmentShader: coronaFragmentShader, uniforms: coronaUniforms, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.BackSide }));
+            const coronaUniforms = { uColor1: { value: new THREE.Color(0xff7700) } };
+            const corona = new THREE.Mesh(new THREE.SphereGeometry(4.4, 32, 32), new THREE.ShaderMaterial({ vertexShader: coronaVertexShader, fragmentShader: coronaFragmentShader, uniforms: coronaUniforms, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.BackSide }));
             group.add(corona); group.userData.corona = corona;
 
             group.add(createInnerPlasma());
             group.add(createDarkMetalParticles());
-
-            const COUNT = 150; const pGeo = new THREE.BufferGeometry();
-            const pPos = new Float32Array(COUNT * 3); const pVel = new Float32Array(COUNT * 3);
-            for (let i = 0; i < COUNT; i++) {
-                const theta = Math.random() * Math.PI * 2; const phi = Math.acos(2 * Math.random() - 1); const r = 3.8 + Math.random() * 2.0;
-                pPos[i * 3]     = r * Math.sin(phi) * Math.cos(theta);
-                pPos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
-                pPos[i * 3 + 2] = r * Math.cos(phi);
-                pVel[i * 3]     = (Math.random() - 0.5) * 0.008;
-                pVel[i * 3 + 1] = (Math.random() - 0.5) * 0.008;
-                pVel[i * 3 + 2] = (Math.random() - 0.5) * 0.008;
-            }
-            pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3)); pGeo.userData = { velocity: pVel };
-            const points = new THREE.Points(pGeo, new THREE.PointsMaterial({ map: circleTex, color: 0xffaa00, size: 0.22, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, alphaTest: 0.01 }));
-            group.add(points); group.userData.particles = points;
+            group.add(createSolarFlaresGPU());
 
             const sunLight = new THREE.PointLight(0xffaa00, 150, 40);
             group.add(sunLight); group.userData.light = sunLight;
+            addHitbox(group, 3.8);
             return group;
         }
 
-        // Otros Objetos
         function createHydrogen() {
             const group = new THREE.Group();
             group.add(new THREE.Mesh(new THREE.SphereGeometry(0.8, 32, 32), new THREE.MeshStandardMaterial({ color: 0xff0055, emissive: 0xaa0022, emissiveIntensity: 1 })));
@@ -745,6 +916,7 @@
             orbit.rotation.x = Math.PI / 2; group.add(orbit);
             const electron = new THREE.Mesh(new THREE.SphereGeometry(0.3, 16, 16), new THREE.MeshStandardMaterial({ color: 0x00f3ff, emissive: 0x00f3ff, emissiveIntensity: 2 }));
             electron.position.x = 2.8; orbit.add(electron); orbit.userData.electron = electron;
+            addHitbox(group, 3.0);
             return group;
         }
 
@@ -754,14 +926,16 @@
             const bondMat = new THREE.MeshStandardMaterial({ color: 0x00f3ff, emissive: 0x00f3ff, emissiveIntensity: 1 });
             const atomPositions = [[0, 0, 0], [2.5, 1.2, 0], [-2.5, 1.2, 0], [0, -2.5, 1.8], [1.8, -1.2, -2.5], [-1.8, -1.2, -2.5]];
             atomPositions.forEach((pos, i) => {
-                const atom = new THREE.Mesh(new THREE.SphereGeometry(i === 0 ? 0.8 : 0.5, 32, 32), i === 0 ? sphereMat : new THREE.MeshStandardMaterial({ color: i % 2 === 0 ? 0x00f3ff : 0xff00ff, emissive: i % 2 === 0 ? 0x0055ff : 0xaa00aa, emissiveIntensity: 0.8 }));
+                const atom = new THREE.Mesh(new THREE.SphereGeometry(i === 0 ? 0.8 : 0.5, 24, 24), i === 0 ? sphereMat : new THREE.MeshStandardMaterial({ color: i % 2 === 0 ? 0x00f3ff : 0xff00ff, emissive: i % 2 === 0 ? 0x0055ff : 0xaa00aa, emissiveIntensity: 0.8 }));
                 atom.position.set(...pos); group.add(atom);
                 if (i > 0) {
                     const start = new THREE.Vector3(0, 0, 0); const end = new THREE.Vector3(...pos);
                     const cyl = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, start.distanceTo(end), 8), bondMat);
                     cyl.position.copy(start.clone().add(end).multiplyScalar(0.5)); cyl.lookAt(end); cyl.rotateX(Math.PI / 2); group.add(cyl);
                 }
-            }); return group;
+            });
+            addHitbox(group, 3.2);
+            return group;
         }
 
         function createBook() {
@@ -769,11 +943,44 @@
             const pageMat = new THREE.MeshStandardMaterial({ color: 0xdddddd, emissive: 0x222222, roughness: 0.5 });
             const leftPage = new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.1, 2.5), pageMat); leftPage.position.set(-0.88, 0, 0); leftPage.rotation.z = Math.PI / 12; group.add(leftPage);
             const rightPage = new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.1, 2.5), pageMat); rightPage.position.set(0.88, 0, 0); rightPage.rotation.z = -Math.PI / 12; group.add(rightPage);
-            const pGeo = new THREE.BufferGeometry(); const pPos = new Float32Array(100 * 3);
-            for(let i=0; i<100; i++) { pPos[i*3] = (Math.random()-0.5)*2.0; pPos[i*3+1] = Math.random()*2.5; pPos[i*3+2] = (Math.random()-0.5)*2.0; }
+
+            // Partículas del libro animadas 100% en GPU
+            const COUNT = 90;
+            const pGeo = new THREE.BufferGeometry();
+            const pPos = new Float32Array(COUNT * 3);
+            const phases = new Float32Array(COUNT);
+            for(let i = 0; i < COUNT; i++) {
+                pPos[i*3]   = (Math.random() - 0.5) * 2.2;
+                pPos[i*3+1] = 0;
+                pPos[i*3+2] = (Math.random() - 0.5) * 2.0;
+                phases[i]   = Math.random();
+            }
             pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
-            const points = new THREE.Points(pGeo, new THREE.PointsMaterial({map: circleTex, color: 0x00f3ff, size: 0.12, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, alphaTest: 0.1}));
-            group.add(points); group.userData.particles = points; return group;
+            pGeo.setAttribute('aPhase', new THREE.BufferAttribute(phases, 1));
+            const pMat = new THREE.ShaderMaterial({
+                uniforms: { uTime: sunUniforms.uTime, uTex: { value: circleTex }, uPixelRatio: { value: Math.min(window.devicePixelRatio, 1.5) } },
+                vertexShader: `
+                    uniform float uTime; uniform float uPixelRatio; attribute float aPhase; varying float vAlpha;
+                    void main() {
+                        float life = fract(aPhase + uTime * 0.22);
+                        vec3 pos = position;
+                        pos.y = life * 2.6;
+                        pos.x += sin(uTime * 1.5 + aPhase * 6.28) * 0.15;
+                        vAlpha = sin(life * 3.14159);
+                        vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+                        gl_PointSize = 0.16 * uPixelRatio * (300.0 / -mvPosition.z);
+                        gl_Position = projectionMatrix * mvPosition;
+                    }
+                `,
+                fragmentShader: `
+                    uniform sampler2D uTex; varying float vAlpha;
+                    void main() { vec4 tex = texture2D(uTex, gl_PointCoord); gl_FragColor = vec4(0.0, 0.95, 1.0, tex.a * vAlpha); }
+                `,
+                transparent: true, blending: THREE.AdditiveBlending, depthWrite: false
+            });
+            group.add(new THREE.Points(pGeo, pMat));
+            addHitbox(group, 2.8);
+            return group;
         }
 
         function createTarget() {
@@ -782,15 +989,22 @@
             const ring1 = new THREE.Mesh(new THREE.TorusGeometry(1.8, 0.04, 16, 64), new THREE.MeshBasicMaterial({ color: 0xff00ff, transparent: true, opacity: 0.8 })); ring1.rotation.x = Math.PI / 2; group.add(ring1);
             const ring2 = new THREE.Mesh(new THREE.TorusGeometry(2.6, 0.04, 16, 64), new THREE.MeshBasicMaterial({ color: 0x00f3ff, transparent: true, opacity: 0.6 })); ring2.rotation.y = Math.PI / 2; group.add(ring2);
             group.userData.rings = [ring1, ring2]; group.userData.core = core;
+            addHitbox(group, 2.8);
             return group;
         }
 
         function createCrystal() {
             const group = new THREE.Group();
             const geo = new THREE.OctahedronGeometry(2.0, 0);
-            const mat = new THREE.MeshPhysicalMaterial({ color: 0x00f3ff, metalness: 0.1, roughness: 0.05, transmission: 0.95, thickness: 0.5, clearcoat: 1.0, emissive: 0x002255, emissiveIntensity: 0.5 });
+            // Optimizado sin transmission pesada
+            const mat = new THREE.MeshStandardMaterial({
+                color: 0x00f3ff, metalness: 0.85, roughness: 0.12,
+                emissive: 0x0044aa, emissiveIntensity: 0.7,
+                transparent: true, opacity: 0.82
+            });
             group.add(new THREE.Mesh(geo, mat));
-            const wire = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: 0xff00ff, wireframe: true, transparent: true, opacity: 0.4 })); wire.scale.set(1.02, 1.02, 1.02); group.add(wire);
+            const wire = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: 0xff00ff, wireframe: true, transparent: true, opacity: 0.55 })); wire.scale.set(1.03, 1.03, 1.03); group.add(wire);
+            addHitbox(group, 2.5);
             return group;
         }
 
@@ -799,38 +1013,46 @@
             const geo = new THREE.SphereGeometry(0.2, 16, 16); const mat = new THREE.MeshStandardMaterial({color: 0xff00ff, emissive: 0xaa00aa, emissiveIntensity: 1.5});
             for(let i=0; i<nodesCount; i++) { const node = new THREE.Mesh(geo, mat); node.position.set((Math.random()-0.5)*5, (Math.random()-0.5)*5, (Math.random()-0.5)*5); nodes.push(node.position); group.add(node); }
             const points = []; for(let i=0; i<nodesCount; i++) { for(let j=i+1; j<nodesCount; j++) { if(nodes[i].distanceTo(nodes[j]) < 3.0) { points.push(nodes[i], nodes[j]); } } }
-            group.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(points), new THREE.LineBasicMaterial({color: 0x00f3ff, transparent: true, opacity: 0.5}))); return group;
+            group.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(points), new THREE.LineBasicMaterial({color: 0x00f3ff, transparent: true, opacity: 0.5})));
+            addHitbox(group, 3.2);
+            return group;
         }
 
         function createHoloCube() {
             const group = new THREE.Group();
             group.add(new THREE.Mesh(new THREE.BoxGeometry(2.5, 2.5, 2.5, 2, 2, 2), new THREE.MeshStandardMaterial({ color: 0x00f3ff, emissive: 0x0088ff, emissiveIntensity: 0.6, metalness: 0.9, roughness: 0.1, transparent: true, opacity: 0.3, wireframe: true })));
+            addHitbox(group, 2.6);
             return group;
         }
 
         // ============================================
-        // 6. CREACIÓN DE MARCAS DE AGUA (Backgrounds)
+        // 6. CREACIÓN DE MARCAS DE AGUA LIGERAS
         // ============================================
         const objectsGroup = new THREE.Group(); scene.add(objectsGroup);
         const ObjectXPosition = 5.5; 
 
         function makeWatermark(originalGroup) {
-            const clone = originalGroup.clone();
-            clone.traverse(child => {
+            const wmGroup = new THREE.Group();
+            const wmMeshMat = new THREE.MeshBasicMaterial({ color: 0x113355, transparent: true, opacity: 0.08, wireframe: true, depthWrite: false });
+            const wmLineMat = new THREE.LineBasicMaterial({ color: 0x113355, transparent: true, opacity: 0.06, depthWrite: false });
+
+            originalGroup.children.forEach(child => {
+                if (child === originalGroup.userData.hitbox || child === originalGroup.userData.corona) return;
                 if (child.isMesh) {
-                    child.material = new THREE.MeshBasicMaterial({ color: 0x113355, transparent: true, opacity: 0.08, wireframe: false, depthWrite: false });
-                } else if (child.isPoints || child.isLineSegments) {
-                    child.material = child.material.clone();
-                    child.material.opacity = 0.05;
-                } else if (child.isLight) {
-                    child.intensity = 0;
-                    child.visible = false;
+                    const m = new THREE.Mesh(child.geometry, wmMeshMat);
+                    m.position.copy(child.position);
+                    m.rotation.copy(child.rotation);
+                    m.scale.copy(child.scale);
+                    wmGroup.add(m);
+                } else if (child.isLineSegments) {
+                    const l = new THREE.LineSegments(child.geometry, wmLineMat);
+                    wmGroup.add(l);
                 }
             });
-            clone.position.set(0, 0, -12); 
-            clone.visible = false;
-            scene.add(clone);
-            return clone;
+            wmGroup.position.set(0, 0, -12); 
+            wmGroup.visible = false;
+            scene.add(wmGroup);
+            return wmGroup;
         }
 
         const sceneObjects = { 
@@ -840,7 +1062,12 @@
 
         Object.keys(sceneObjects).forEach(key => {
             const obj = sceneObjects[key];
-            obj.position.set(ObjectXPosition, 0, 0);
+            // El Sol nace centrado en la Diapositiva 0; los demás objetos nacen en el costado derecho
+            if (key === 'sun') {
+                obj.position.set(0, 1.3, 0);
+            } else {
+                obj.position.set(ObjectXPosition, 0, 0);
+            }
             obj.visible = false; obj.scale.set(0, 0, 0);
             objectsGroup.add(obj); watermarks[key] = makeWatermark(obj);
         });
@@ -856,8 +1083,15 @@
             const prevBg = currentWatermark;
 
             if (sceneName === 'none') {
-                if (currentObject) { gsap.to(currentObject.scale, { x: 0, y: 0, z: 0, duration: 0.6, onComplete: () => { currentObject.visible = false; }}); currentObject = null; }
-                if (prevBg) { gsap.to(prevBg.scale, { x: 0.1, y: 0.1, z: 0.1, duration: 1, onComplete: () => { prevBg.visible = false; }}); currentWatermark = null; }
+                if (currentObject) {
+                    const objToHide = currentObject;
+                    gsap.to(objToHide.scale, { x: 0, y: 0, z: 0, duration: 0.6, onComplete: () => { objToHide.visible = false; }});
+                    currentObject = null;
+                }
+                if (prevBg) {
+                    gsap.to(prevBg.scale, { x: 0.1, y: 0.1, z: 0.1, duration: 1, onComplete: () => { prevBg.visible = false; }});
+                    currentWatermark = null;
+                }
                 return;
             }
 
@@ -872,7 +1106,7 @@
             if (prevBg) { gsap.to(prevBg.scale, { x: 0.1, y: 0.1, z: 0.1, duration: 1, ease: 'power2.inOut', onComplete: () => { prevBg.visible = false; } }); }
 
             nextObject.visible = true; nextObject.scale.set(0, 0, 0); nextObject.rotation.set(0, 0, 0);
-            gsap.to(nextObject.scale, { x: 1, y: 1, z: 1, duration: 1, delay: 0.3, ease: 'elastic.out(1, 0.5)' });
+            gsap.to(nextObject.scale, { x: 1, y: 1, z: 1, duration: 1, delay: 0.25, ease: 'elastic.out(1, 0.5)' });
 
             if(nextBg) {
                 nextBg.visible = true; nextBg.scale.set(1.5, 1.5, 1.5);
@@ -881,41 +1115,92 @@
         }
 
         // ============================================
-        // 8. INTERSECTION OBSERVER
+        // 8. NAVEGACIÓN, TECLADO Y PANTALLA COMPLETA
         // ============================================
-        const sections = document.querySelectorAll('section'); const indicator = document.getElementById('progress-indicator');
-        sections.forEach((sec, i) => { const dot = document.createElement('div'); dot.className = 'progress-dot' + (i === 0 ? ' active' : ''); dot.addEventListener('click', () => { sec.scrollIntoView({ behavior: 'smooth' }); }); indicator.appendChild(dot); });
+        const sections = Array.from(document.querySelectorAll('section'));
+        const indicator = document.getElementById('progress-indicator');
+        let currentSectionIndex = 0;
+
+        sections.forEach((sec, i) => {
+            const dot = document.createElement('div');
+            dot.className = 'progress-dot' + (i === 0 ? ' active' : '');
+            dot.setAttribute('data-title', sec.getAttribute('data-title') || `Sección ${i}`);
+            dot.addEventListener('click', () => { sec.scrollIntoView({ behavior: 'smooth' }); });
+            indicator.appendChild(dot);
+        });
+
         const dots = document.querySelectorAll('.progress-dot');
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('visible'); const sceneName = entry.target.dataset.scene;
+                    entry.target.classList.add('visible');
+                    const sceneName = entry.target.dataset.scene;
                     if (sceneName) switchScene(sceneName);
-                    const idx = Array.from(sections).indexOf(entry.target); dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+                    currentSectionIndex = sections.indexOf(entry.target);
+                    dots.forEach((d, i) => d.classList.toggle('active', i === currentSectionIndex));
                 }
             });
-        }, { threshold: 0.4 });
+        }, { threshold: 0.35 });
         sections.forEach(sec => observer.observe(sec));
 
-        // ============================================
-        // 9. EVENTOS DEL MOUSE Y RAYCASTER OPTIMIZADO
-        // ============================================
-        const raycaster = new THREE.Raycaster(); const mouse = new THREE.Vector2(); const parallaxMouse = { x: 0, y: 0 };
-        let isHovered = false; let rotationSpeedLerp = 0.006; 
+        function goToSection(index) {
+            const clamped = Math.max(0, Math.min(sections.length - 1, index));
+            sections[clamped].scrollIntoView({ behavior: 'smooth' });
+        }
 
-        window.addEventListener('mousemove', (e) => { 
-            parallaxMouse.x = (e.clientX / window.innerWidth) - 0.5; parallaxMouse.y = (e.clientY / window.innerHeight) - 0.5; 
-            mouse.x = (e.clientX / window.innerWidth) * 2 - 1; mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-        }, { passive: true });
+        document.getElementById('btn-prev').addEventListener('click', () => goToSection(currentSectionIndex - 1));
+        document.getElementById('btn-next').addEventListener('click', () => goToSection(currentSectionIndex + 1));
 
-        window.addEventListener('resize', () => { 
-            camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); composer.setSize(window.innerWidth, window.innerHeight); bloomPass.setSize(window.innerWidth, window.innerHeight); 
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => {});
+            } else {
+                document.exitFullscreen().catch(() => {});
+            }
+        }
+        document.getElementById('btn-fullscreen').addEventListener('click', toggleFullScreen);
+
+        window.addEventListener('keydown', (e) => {
+            if (['ArrowDown', 'PageDown', ' '].includes(e.key)) {
+                e.preventDefault();
+                goToSection(currentSectionIndex + 1);
+            } else if (['ArrowUp', 'PageUp'].includes(e.key)) {
+                e.preventDefault();
+                goToSection(currentSectionIndex - 1);
+            } else if (e.key === 'f' || e.key === 'F') {
+                toggleFullScreen();
+            }
         });
 
         // ============================================
-        // 10. BUCLE DE RENDERIZADO OPTIMIZADO
+        // 9. EVENTOS DEL MOUSE Y RAYCASTER CON HITBOX
+        // ============================================
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2(-10, -10);
+        const parallaxMouse = { x: 0, y: 0 };
+        let isHovered = false;
+        let rotationSpeedLerp = 0.006; 
+
+        window.addEventListener('mousemove', (e) => { 
+            parallaxMouse.x = (e.clientX / window.innerWidth) - 0.5;
+            parallaxMouse.y = (e.clientY / window.innerHeight) - 0.5; 
+            mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+        }, { passive: true });
+
+        window.addEventListener('resize', () => { 
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            composer.setSize(window.innerWidth, window.innerHeight);
+            bloomPass.setSize(window.innerWidth / 2, window.innerHeight / 2); 
+        });
+
+        // ============================================
+        // 10. BUCLE DE RENDERIZADO (SIN GARBAGE COLLECTION)
         // ============================================
         const clock = new THREE.Clock();
+        const tempScaleVec = new THREE.Vector3();
         let raycastTimer = 0;
 
         function animate() {
@@ -925,11 +1210,10 @@
             sunUniforms.uTime.value = t;
             globalParticles.rotation.y = t * 0.005;
 
-            // Optimización: Comprobar el Raycaster cada pocos frames en lugar de estrictamente en cada fotograma
             raycastTimer++;
-            if (currentObject && raycastTimer % 3 === 0) {
+            if (currentObject && currentObject.userData.hitbox && raycastTimer % 4 === 0) {
                 raycaster.setFromCamera(mouse, camera);
-                const intersects = raycaster.intersectObject(currentObject, true);
+                const intersects = raycaster.intersectObject(currentObject.userData.hitbox, false);
                 isHovered = intersects.length > 0;
             }
 
@@ -938,27 +1222,15 @@
                 rotationSpeedLerp += (targetSpeed - rotationSpeedLerp) * 0.1;
                 currentObject.rotation.y += rotationSpeedLerp;
                 
-                const targetScale = isHovered ? 1.05 : 1.0;
-                currentObject.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.1);
+                if (currentObject.scale.x > 0.2) {
+                    const targetScale = isHovered ? 1.06 : 1.0;
+                    tempScaleVec.set(targetScale, targetScale, targetScale);
+                    currentObject.scale.lerp(tempScaleVec, 0.1);
+                }
 
                 if (currentObject === sceneObjects.sun) {
                     if (currentObject.userData.light) {
                         currentObject.userData.light.intensity = 150 + Math.sin(t * 2) * 30 + (isHovered ? 60 : 0);
-                    }
-                    if (currentObject.userData.particles) {
-                        const positions = currentObject.userData.particles.geometry.attributes.position.array;
-                        const velocities = currentObject.userData.particles.geometry.userData.velocity;
-                        const speedMult = isHovered ? 2.0 : 1.0;
-
-                        for (let i = 0; i < positions.length; i += 3) {
-                            positions[i]     += velocities[i] * speedMult;
-                            positions[i + 1] += velocities[i + 1] * speedMult;
-                            positions[i + 2] += velocities[i + 2] * speedMult;
-
-                            const dist = Math.sqrt(positions[i] ** 2 + positions[i + 1] ** 2 + positions[i + 2] ** 2);
-                            if (dist > 6.5) { positions[i] *= 0.4; positions[i + 1] *= 0.4; positions[i + 2] *= 0.4; }
-                        }
-                        currentObject.userData.particles.geometry.attributes.position.needsUpdate = true;
                     }
                 } else {
                     currentObject.rotation.x += 0.002;
@@ -966,11 +1238,6 @@
 
                     if (currentObject === sceneObjects.hydrogen) {
                         currentObject.children.forEach(child => { if (child.userData.electron) child.rotation.z -= (isHovered ? 0.08 : 0.03); });
-                    }
-                    if (currentObject === sceneObjects.book && currentObject.userData.particles) {
-                        const pos = currentObject.userData.particles.geometry.attributes.position.array;
-                        for(let i=0; i<pos.length; i+=3) { pos[i+1] += (isHovered ? 0.04 : 0.015); if(pos[i+1] > 2.5) { pos[i+1] = 0; pos[i] = (Math.random() - 0.5) * 1.5; pos[i+2] = (Math.random() - 0.5) * 1.5; } }
-                        currentObject.userData.particles.geometry.attributes.position.needsUpdate = true;
                     }
                     if (currentObject === sceneObjects.target) {
                         currentObject.userData.rings[0].rotation.x += (isHovered ? 0.05 : 0.01);
@@ -981,8 +1248,8 @@
 
             if (currentWatermark) { currentWatermark.rotation.y += 0.001; }
 
-            camera.position.x += ((parallaxMouse.x * 2) - camera.position.x) * 0.05;
-            camera.position.y += ((-parallaxMouse.y * 2) - camera.position.y) * 0.05;
+            camera.position.x += ((parallaxMouse.x * 1.8) - camera.position.x) * 0.05;
+            camera.position.y += ((-parallaxMouse.y * 1.8) - camera.position.y) * 0.05;
             camera.lookAt(0, 0, 0);
 
             composer.render();
